@@ -1,0 +1,85 @@
+import mysql.connector
+
+def connect_db():
+    return mysql.connector.connect(host='localhost', user='root', password='Binthia@3002', database='student_db')
+
+def create_table():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS students (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255),
+        age INT,
+        department VARCHAR(255)
+    )""")
+    conn.commit()
+    conn.close()
+
+def add_student(name, age, department):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO students (name, age, department) VALUES (%s, %s, %s)", (name, age, department))
+    conn.commit()
+    conn.close()
+    print("Student added successfully!")
+
+def view_students():
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM students")
+    students = cursor.fetchall()
+    conn.close()
+    for student in students:
+        print(student)
+
+def update_student(id, name, age, department):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("UPDATE students SET name = %s, age = %s, department = %s WHERE id = %s", (name, age, department, id))
+    conn.commit()
+    conn.close()
+    print("Student updated successfully!")
+
+def delete_student(id):
+    conn = connect_db()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM students WHERE id = %s", (id,))
+    conn.commit()
+    conn.close()
+    print("Student deleted successfully!")
+
+def main():
+    create_table()
+    while True:
+        print("\nStudent Management System")
+        print("1. Add Student")
+        print("2. View Students")
+        print("3. Update Student")
+        print("4. Delete Student")
+        print("5. Exit")
+        choice = input("Enter your choice: ")
+        
+        if choice == '1':
+            name = input("Enter Name: ")
+            age = input("Enter Age: ")
+            department = input("Enter Department: ")
+            add_student(name, age, department)
+        elif choice == '2':
+            view_students()
+        elif choice == '3':
+            id = input("Enter Student ID to Update: ")
+            name = input("Enter New Name: ")
+            age = input("Enter New Age: ")
+            department = input("Enter New Department: ")
+            update_student(id, name, age, department)
+        elif choice == '4':
+            id = input("Enter Student ID to Delete: ")
+            delete_student(id)
+        elif choice == '5':
+            break
+        else:
+            print("Invalid choice, please try again.")
+
+if __name__ == '__main__':
+    main()
