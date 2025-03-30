@@ -1,0 +1,6 @@
+CREATE DATABASE student_db;
+USE student_db;
+
+SHOW TABLES;
+
+SELECT * FROM students;
