@@ -1,7 +1,7 @@
 import mysql.connector
 
 def connect_db():
-    return mysql.connector.connect(host='localhost', user='root', password='Binthia@3002', database='student_db')
+    return mysql.connector.connect(host='localhost', user='root', password='Binthia', database='student_db')
 
 def create_table():
     conn = connect_db()
